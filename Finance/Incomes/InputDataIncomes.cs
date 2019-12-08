@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Finance.Interfaces;
+using Finance.Interfaces.DataInput;
+using Finance.Interfaces.Operations;
 
 namespace Finance.Incomes
 {

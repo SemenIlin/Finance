@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Finance.Interfaces;
+using Finance.Interfaces.Operations;
 
 namespace Finance.Commands
 {
     public class RecordsOfCommand : IEnumerable<Command>
-    {
+    {        
         private readonly ICollection<Command> commands;
 
         public RecordsOfCommand(ICollection<Command> commands)
