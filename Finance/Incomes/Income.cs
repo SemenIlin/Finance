@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Finance.Incomes
+﻿namespace Finance.Incomes
 {
     public class Income
     {

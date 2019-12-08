@@ -1,43 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
+using Finance.Interfaces;
 
 namespace Finance.Expenses
 {
-    public class InputDataExpenses
+    public class InputDataExpenses : ICommand
     {
         private int day;
         private decimal money;
         private string resource = String.Empty;
-        private RecordsOfExpenses Records { get; }
 
-        public InputDataExpenses()
-        {
-            AddDay();
-            AddMoney();
-            AddResource();
-            Expense expense = new Expense(day, money, resource);
-            Records = RecordsOfExpenses.GetInstance();
-            Records.AddIncome(expense);
+        private readonly IInputData inputData;
+        private Expense expense;
+        private RecordsOfExpenses records;
+       
+
+        public InputDataExpenses(ICollection<Expense> expenses, IInputData inputData)
+        {            
+            this.inputData = inputData; 
+            records = RecordsOfExpenses.GetInstance(expenses);
         }
+
+        public void Execute()
+        {
+            day = inputData.AddDay();
+            money = inputData.AddMoney();
+            resource = inputData.AddResource();
+
+            CreateExpense();            
+            AddExpense(CreateExpense());                    
+        }
+
         public RecordsOfExpenses GetRecords()
         {
-            return Records;
+            return records;
         }
 
-        private void AddDay()
+        private Expense CreateExpense()
         {
-            Console.WriteLine("Введите день");
-            day = int.TryParse(Console.ReadLine(), out day) ? (day >= 0 ? day : 0) : 0;
+            expense = new Expense(day, money, resource);
+            return expense;
         }
 
-        private void AddMoney()
+        private void AddExpense(Expense expense)
         {
-            Console.WriteLine("Введите величину расхода");
-            money = decimal.TryParse(Console.ReadLine(), out money) ? (money >= 0 ? money : 0) : 0;
-        }
-        private void AddResource()
-        {
-            Console.WriteLine("Введите причину");
-            resource = Console.ReadLine();
-        }
+            records.AddExpense(expense);
+        }        
     }
 }

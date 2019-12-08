@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Finance.Incomes
 {
     public class RecordsOfIncomes
     {
-        private readonly List<Income> incomes;
+        private readonly ICollection<Income> incomes;
         private static RecordsOfIncomes instance;
 
-        private RecordsOfIncomes()
+        private RecordsOfIncomes(ICollection<Income> incomes)
         {
-            incomes = new List<Income>();
+            this.incomes = incomes;
         }
 
-        public static RecordsOfIncomes GetInstance()
+        public static RecordsOfIncomes GetInstance(ICollection<Income> incomes)
         {
             if (instance == null)
             {
-                instance = new RecordsOfIncomes();            
+                instance = new RecordsOfIncomes(incomes);            
             }
 
             return instance;
@@ -29,7 +27,7 @@ namespace Finance.Incomes
             incomes.Add(income);
         }
 
-        public List<Income> GetIncomes()
+        public ICollection<Income> GetIncomes()
         {
             return incomes;
         }

@@ -1,44 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using Finance.Interfaces;
 
 namespace Finance.Incomes
 {
-    public class InputDataIncomes
+    public class InputDataIncomes : ICommand
     {
+        private readonly IInputData inputData;
+
         private int day;
         private decimal money;
         private string resource = String.Empty;
-        private RecordsOfIncomes Records { get; }
 
-        public InputDataIncomes()
+        private Income income;
+        private RecordsOfIncomes Records;
+
+
+        public InputDataIncomes(ICollection<Income> incomes, IInputData inputData)
         {
-            AddDay();
-            AddMoney();
-            AddResource();
-            Income income = new Income(day, money, resource);
-            Records = RecordsOfIncomes.GetInstance();
-            Records.AddIncome(income);
+            this.inputData = inputData;
+            Records = RecordsOfIncomes.GetInstance(incomes);
         }
+
+        public void Execute()
+        {
+
+            day = inputData.AddDay();
+            money = inputData.AddMoney();
+            resource = inputData.AddResource();
+
+            CreateIncome();
+            AddIncome(CreateIncome());        
+        }
+
         public RecordsOfIncomes GetRecords()
         {
             return Records;
         }
 
-        private void AddDay()
+        private Income CreateIncome()
         {
-            Console.WriteLine("Введите день");
-            day = int.TryParse(Console.ReadLine(), out day) ? (day >= 0 ? day : 0) : 0 ;
+            income = new Income(day, money, resource);
+            return income;
         }
 
-        private void AddMoney()
+        private void AddIncome(Income income)
         {
-            Console.WriteLine("Введите величину дохода");
-            money = decimal.TryParse(Console.ReadLine(), out money) ? (money >= 0 ? money : 0) : 0;
-        }
-        private void AddResource()
-        {
-            Console.WriteLine("Введите источник");
-            resource = Console.ReadLine();
+            Records.AddIncome(income);
         }
     }
 }

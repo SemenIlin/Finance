@@ -1,19 +1,21 @@
 ﻿using Finance.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Finance.Incomes
 {
-    public class OutputDataIncomes
+    public class OutputDataIncomes : ICommand
     {
-        private List<Income> incomes;
-        private List<Income> tempIncome;
+        private readonly IInputCount inputCount;
+        private readonly ICollection<Income> incomes;
+        private ICollection<Income> tempIncome;
 
-        public OutputDataIncomes(int count, RecordsOfIncomes records)
+        private int countRecords;
+
+        public OutputDataIncomes(IInputCount inputCount, RecordsOfIncomes records)
         {
-            incomes = records.GetIncomes();
-            GetListIncomes(count);
+            incomes = records.GetIncomes();            
+            this.inputCount = inputCount; 
         }
 
         public void Print(IPrint print)
@@ -31,7 +33,14 @@ namespace Finance.Incomes
             return sb.ToString();
         }
 
-        private List<Income> GetListIncomes(int count)
+        public void Execute()
+        {
+            countRecords = inputCount.SetCount();
+            GetListIncomes(countRecords);
+            Print(new ConsolePrint());
+        }
+
+        private ICollection<Income> GetListIncomes(int count)
         {
             tempIncome = new List<Income>();
 
@@ -39,13 +48,18 @@ namespace Finance.Incomes
             {
                 if (incomes.Count > count)
                 {
-                    for (int i = 0; i < count; i++)
+                    int counter = 0;
+                    foreach (var income in incomes)
                     {
-                        tempIncome.Add(incomes[count]);                    
-                    }                                    
+                        if (counter < count)
+                        {
+                            tempIncome.Add(income);
+                            counter++;
+                        }
+                    }                                 
                 }
 
-                else if( incomes.Count <= 3)
+                else if( incomes.Count <= count)
                 {
                     tempIncome = incomes;
                 }

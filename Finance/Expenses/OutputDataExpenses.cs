@@ -4,23 +4,34 @@ using System.Text;
 
 namespace Finance.Expenses
 {
-    public class OutputDataExpenses
+    public class OutputDataExpenses : ICommand
     {
-        private List<Expense> expense;
-        private List<Expense> tempExpense;
+        private readonly IInputCount inputCount;
+        private readonly ICollection<Expense> expenses;
+        private ICollection<Expense> tempExpense;
 
-        public OutputDataExpenses(int count, RecordsOfExpenses records)
+        private int countRecords;
+
+
+        public OutputDataExpenses(IInputCount inputCount, RecordsOfExpenses records)
         {
-            expense = records.GetExpenses();
-            GetListExpenses(count);
+            expenses = records.GetExpenses();           
+            this.inputCount = inputCount;
         }
 
         public void Print(IPrint print)
         {
-            print.Print(ToString());
+            print.Print(GetLest());
+        }        
+
+        public void Execute()
+        {
+            countRecords = inputCount.SetCount();
+            GetListExpenses(countRecords);
+            Print(new ConsolePrint());
         }
 
-        public override string ToString()
+        private string GetLest()
         {
             var sb = new StringBuilder();
 
@@ -30,23 +41,28 @@ namespace Finance.Expenses
             return sb.ToString();
         }
 
-        private List<Expense> GetListExpenses(int count)
+        private ICollection<Expense> GetListExpenses(int count)
         {
             tempExpense = new List<Expense>();
 
-            if (expense.Count != 0)
+            if (expenses.Count != 0)
             {
-                if (expense.Count > count)
+                if (expenses.Count > count)
                 {
-                    for (int i = 0; i < count; i++)
+                    int counter = 0;
+                    foreach(var expense in expenses) 
                     {
-                        tempExpense.Add(expense[count]);
+                        if (counter < count)
+                        {
+                            tempExpense.Add(expense);
+                            counter++;
+                        }
                     }
                 }
 
-                else if (expense.Count <= 3)
+                else if (expenses.Count <= count)
                 {
-                    tempExpense = expense;
+                    tempExpense = expenses;
                 }
             }
 

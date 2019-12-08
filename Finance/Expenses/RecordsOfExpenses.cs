@@ -4,30 +4,30 @@ namespace Finance.Expenses
 {
     public class RecordsOfExpenses
     {
-        private readonly List<Expense> expenses = new List<Expense>();
+        private readonly ICollection<Expense> expenses;
         private static RecordsOfExpenses instance;
 
-        private RecordsOfExpenses()
+        private RecordsOfExpenses(ICollection<Expense> expenses)
         {
-            expenses = new List<Expense>();
+            this.expenses = expenses;
         }
 
-        public static RecordsOfExpenses GetInstance()
+        public static RecordsOfExpenses GetInstance(ICollection<Expense> expenses)
         {
             if (instance == null)
             {
-                instance = new RecordsOfExpenses();
+                instance = new RecordsOfExpenses(expenses);
             }
 
             return instance;
         }
 
-        public void AddIncome(Expense expense)
+        public void AddExpense(Expense expense)
         {
             expenses.Add(expense);
         }
 
-        public List<Expense> GetExpenses()
+        public ICollection<Expense> GetExpenses()
         {
             return expenses;
         }

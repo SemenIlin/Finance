@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Finance;
 using Finance.Incomes;
 using Finance.Expenses;
+using Finance.Commands;
+using Finance.Interfaces;
 
 namespace expenses_revenue
 {
@@ -9,62 +12,33 @@ namespace expenses_revenue
     {
         static void Main(string[] args)
         {
+            var commands = new RecordsOfCommand(new List<Command>());
+            var inputIncome = new InputDataIncomes(new List<Income>(), new ConsoleInputDataIncome());
+            var inputExpense = new InputDataExpenses(new List<Expense>(), new ConsoleInputDataExpense());
+            var getCommand = new GetCommandByIdQuery(commands);
+
             Console.WriteLine("Анализ доходов и расходов");
-            InputDataIncomes input = null;
-            InputDataExpenses expenses = null;
+
+            commands.AddCommand("Записать доход.", inputIncome);
+            commands.AddCommand("Вывести список доходов.", new OutputDataIncomes(new ConsoleCount(), inputIncome.GetRecords()));
+            commands.AddCommand("Записать расход.", inputExpense);
+            commands.AddCommand("Вывести список расходов.", new OutputDataExpenses(new ConsoleCount(), inputExpense.GetRecords()));
+
             while (true)
             {
-                Console.WriteLine("1 Write Incomes\n" +
-                                   "2 Read Incomes\n" +
-                                   "3 Write Expenses\n" +
-                                   "4 Read Expenses \n");
-
-                string choise = Console.ReadLine();
-                switch (choise)
+                Console.WriteLine();
+                foreach (var command in commands)
                 {
-                    case "1":
-                        input = new InputDataIncomes();
-
-                        break;
-
-                    case "2":
-                        Console.WriteLine("Введите количество строчек.");
-                        int count = int.TryParse(Console.ReadLine(), out count) ? (count > 0 ? count : 1) : 1;
-                        if (input != null)
-                        {
-                            OutputDataIncomes output = new OutputDataIncomes(count, input.GetRecords());
-                            output.Print(new ConsolePrint());
-                        }
-                        else 
-                        {
-                            Console.WriteLine("Данных нету");                        
-                        }
-
-                        break;
-
-                    case "3":
-                        expenses = new InputDataExpenses();
-                        break;
-
-                    case "4":
-                        Console.WriteLine("Введите количество строчек.");
-                        count = int.TryParse(Console.ReadLine(), out count) ? (count > 0 ? count : 1) : 1;
-                        if (expenses != null)
-                        {
-                            OutputDataExpenses output = new OutputDataExpenses(count, expenses.GetRecords());
-                            output.Print(new ConsolePrint());
-                        }
-                        else
-                        {
-                            Console.WriteLine("Данных нету");
-                        }
-
-                        break;
-
-                    default:
-                        Console.WriteLine("Неизвестная команда.");
-                        break;    
+                    Console.WriteLine("{0}.  {1}", command.Id, command.Text);                    
                 }
+                int commandId;
+                try
+                {
+                    int.TryParse(Console.ReadLine(), out commandId);
+                    getCommand.Execute(commandId);
+                }
+                catch 
+                { }
 
                 if (Console.ReadKey().Key == ConsoleKey.Escape)
                 {
