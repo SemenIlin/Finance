@@ -7,8 +7,7 @@ namespace Finance.Interfaces.Operations
     {
         public ICollection<MoneyOperation> Handle(OutputDataMoneyOperation outputData)
         {
-            outputData.Execute();
-            return outputData.GetListExpenses();
+            return outputData.GetListMoneyOperations();
         }
     }
 }

@@ -1,74 +1,37 @@
 ﻿using Finance.Money;
-using Finance.Interfaces.DataOutput;
-using Finance.Interfaces.DataInput;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Finance.Interfaces.Operations
 {
-    public class OutputDataMoneyOperation : ICommand, IQuery<ICollection<MoneyOperation>>
+    public class OutputDataMoneyOperation : IQuery<ICollection<MoneyOperation>>
     {
-        private readonly IInputCount inputCount;
-        private readonly ICollection<MoneyOperation> expenses;
         private ICollection<MoneyOperation> outputData;
+        private readonly ICollection<MoneyOperation> moneyOperation;
+        private readonly TypeOperation type;
 
-        private int countRecords;
+        private readonly int countRecords;
 
-
-        public OutputDataMoneyOperation(IInputCount inputCount, RecordsOfMoneyOperations records)
+        public OutputDataMoneyOperation(RecordsOfMoneyOperations records, TypeOperation type, int countRecords)
         {
-            expenses = records.GetExpenses();           
-            this.inputCount = inputCount;
+            this.countRecords = countRecords;
+            this.type = type;
+            moneyOperation = records.GetMoneyOperations();        
         }
 
-        public void Print(IPrint print)
-        {
-            print.Print(ToString());
-        }        
+        public ICollection<MoneyOperation> GetListMoneyOperations()
+        {            
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            foreach (var expense in outputData)
-                sb.AppendFormat("Номер дня: {0} \t Сумма: {1} \t Источник: {2}\n", expense.NumberOfDay, expense.Value, expense.Resource);
-
-            return sb.ToString();
-        }
-
-        public void Execute()
-        {
-            countRecords = inputCount.SetCount();
-            GetListExpenses(countRecords);
-        }
-
-        public ICollection<MoneyOperation> GetListExpenses()
-        {
-            return outputData;
-        }
-
-        private ICollection<MoneyOperation> GetListExpenses(int count)
-        {
-            outputData = new List<MoneyOperation>();
-
-            if (expenses.Count != 0)
+            if (moneyOperation.Count != 0)
             {
-                if (expenses.Count > count)
+                if (moneyOperation.Count > countRecords)
                 {
-                    int counter = 0;
-                    foreach(var expense in expenses) 
-                    {
-                        if (counter < count)
-                        {
-                            outputData.Add(expense);
-                            counter++;
-                        }
-                    }
+                    outputData = moneyOperation.Where(t => t.TypeOperation == type).OrderBy(d => d.NumberOfDay).Take(countRecords).ToList(); 
                 }
 
-                else if (expenses.Count <= count)
+                else if (moneyOperation.Count <= countRecords)
                 {
-                    outputData = expenses;
+                    outputData =  moneyOperation.Where(t => t.TypeOperation == type).OrderBy(d => d.NumberOfDay).ToList();
                 }
             }
 

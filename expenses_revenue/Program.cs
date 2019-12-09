@@ -1,49 +1,84 @@
 ﻿using System;
-using System.Collections.Generic;
-using Finance.Money;
-using Finance.Commands;
-using Finance.Interfaces.Operations;
-using Finance.Interfaces.DataInput;
 
 namespace expenses_revenue
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var commands = new RecordsOfCommand(new List<Command>());
-
-            var inputIncome = new InputDataMoneyOperation(new List<MoneyOperation>(), new ConsoleInputDataIncome());
-            var inputExpense = new InputDataMoneyOperation(new List<MoneyOperation>(), new ConsoleInputDataExpense());
-            var getCommand = new GetCommandByIdQuery(commands);
-
-            var handler = new InputDataMoneyOperationHandler();
-            var rezult = handler.Handle(inputIncome);
-            Console.WriteLine(rezult);
-            // Как добавить Запрос/Ответ в список, и можно ли это сделать?
+            var myFinanse = new MyFinance();
 
             Console.WriteLine("Анализ доходов и расходов");
 
-            commands.AddCommand("Записать доход.", inputIncome);
-            commands.AddCommand("Вывести список доходов.", new OutputDataMoneyOperation(new ConsoleCount(), inputIncome.GetRecords()));
-            commands.AddCommand("Записать расход.", inputExpense);
-            commands.AddCommand("Вывести список расходов.", new OutputDataMoneyOperation(new ConsoleCount(), inputExpense.GetRecords()));
 
             while (true)
             {
-                Console.WriteLine();
-                foreach (var command in commands)
-                {
-                    Console.WriteLine("{0}.  {1}", command.Id, command.Text);                    
-                }
-                int commandId;
+                Console.WriteLine("1. Введите доход. \n" +
+                                  "2. Вывести список доходов.\n" +
+                                  "3. Введите расход.\n" +
+                                  "4. Вывести список расходов. ");
                 try
                 {
-                    int.TryParse(Console.ReadLine(), out commandId);
-                    getCommand.Execute(commandId);
+                    int.TryParse(Console.ReadLine(), out int selectCommand);
+                    switch (selectCommand)
+                    {
+                        case 1:
+                            Console.WriteLine("Введите день:");
+                            int day = int.TryParse(Console.ReadLine(), out day) ? (day > 0 ? day : 1) : 1;
+
+                            Console.WriteLine("Введите величину дохода:");
+                            decimal money = decimal.TryParse(Console.ReadLine(), out money) ? (money > 0 ? money : 0) : 0;
+
+                            Console.WriteLine("Введите источник:");
+                            string resource = Console.ReadLine();
+
+                            Console.WriteLine(myFinanse.AddIncome(day, money, resource));
+
+                            break;
+
+                        case 2:
+                            Console.WriteLine("Введите количество строчек:");
+                            int countRecords = int.TryParse(Console.ReadLine(), out countRecords) ? (countRecords > 0 ? countRecords : 1) : 1;
+
+                            foreach (var item in myFinanse.GetListIncomes(countRecords))
+                            {
+                                Console.WriteLine("Номер дня: {0} \t Величина: {1} \t Источник {2}", item.NumberOfDay, item.Value, item.Resource);                            
+                            }
+
+                            break;
+
+                        case 3:
+                            Console.WriteLine("Введите день:");
+                            day = int.TryParse(Console.ReadLine(), out day) ? (day > 0 ? day : 1) : 1;
+
+                            Console.WriteLine("Введите величину расхода:");
+                            money = decimal.TryParse(Console.ReadLine(), out money) ? (money > 0 ? money : 0) : 0;
+
+                            Console.WriteLine("Введите причину:");
+                            resource = Console.ReadLine();
+
+                            Console.WriteLine(myFinanse.AddExpense(day, money, resource));
+
+                            break;
+
+                        case 4:
+                            Console.WriteLine("Введите количество строчек:");
+                            countRecords = int.TryParse(Console.ReadLine(), out countRecords) ? (countRecords > 0 ? countRecords : 1) : 1;
+
+                            foreach (var item in myFinanse.GetListExpenses(countRecords))
+                            {
+                                Console.WriteLine("Номер дня: {0} \t Величина: {1} \t Причина: {2}", item.NumberOfDay, item.Value, item.Resource);
+                            }
+
+                            break;
+
+                        default:
+                            Console.WriteLine("Неизвестная команда, попробуйте ещё раз. ) ");
+                            break;
+                    }
                 }
-                catch 
-                { }
+                catch { }
+
 
                 if (Console.ReadKey().Key == ConsoleKey.Escape)
                 {

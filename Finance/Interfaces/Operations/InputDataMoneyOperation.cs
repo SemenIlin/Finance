@@ -1,37 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using Finance.Money;
-using Finance.Interfaces.DataInput;
 
 namespace Finance.Interfaces.Operations
 {
-    public class InputDataMoneyOperation : ICommand, IQuery<string>
+    public class InputDataMoneyOperation : IQuery<string>
     {
-        private int day;
-        private decimal money;
-        private string resource = String.Empty;
-        private TypeOperation operation;
+        private readonly int day;
+        private readonly decimal money;
+        private readonly string resource = String.Empty;
+        private readonly TypeOperation operation;
 
-        private readonly IInputData inputData;
-        private MoneyOperation expense;
-        private RecordsOfMoneyOperations records;
-       
+        private readonly RecordsOfMoneyOperations records;
+        private MoneyOperation moneyOperation; 
 
-        public InputDataMoneyOperation(ICollection<MoneyOperation> expenses, IInputData inputData)
-        {            
-            this.inputData = inputData; 
-            records = RecordsOfMoneyOperations.GetInstance(expenses);
+        public InputDataMoneyOperation(ICollection<MoneyOperation> moneyOperations, int day, decimal money, string resource, TypeOperation operation)
+        {
+            this.day = day;
+            this.money = money;
+            this.resource = resource;
+            this.operation = operation;
+
+            records = RecordsOfMoneyOperations.GetInstance(moneyOperations);
         }
 
-        public void Execute()
+        public void AddMoneyOperation() 
         {
-            day = inputData.AddDay();
-            money = inputData.AddMoney();
-            resource = inputData.AddResource();
-            operation = TypeOperation.Expense;
-
-            CreateExpense();            
-            AddExpense(CreateExpense());                    
+            AddMoneyOperation(CreateMoneyOperation());                    
         }
 
         public RecordsOfMoneyOperations GetRecords()
@@ -39,15 +34,15 @@ namespace Finance.Interfaces.Operations
             return records;
         }
 
-        private MoneyOperation CreateExpense()
+        private MoneyOperation CreateMoneyOperation()
         {
-            expense = new MoneyOperation(day, money, resource, operation);
-            return expense;
+            moneyOperation = new MoneyOperation(day, money, resource, operation);
+            return moneyOperation;
         }
 
-        private void AddExpense(MoneyOperation expense)
+        private void AddMoneyOperation(MoneyOperation moneyOperation)
         {
-            records.AddExpense(expense);
+            records.AddMoneyOperation(moneyOperation);
         }        
     }
 }

@@ -4,7 +4,7 @@
     {
         public string Handle(InputDataMoneyOperation input)
         {
-            input.Execute();
+            input.AddMoneyOperation();
             return "Данные успешно добавленны.";
         }
     }

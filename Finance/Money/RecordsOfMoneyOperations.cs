@@ -4,32 +4,32 @@ namespace Finance.Money
 {
     public class RecordsOfMoneyOperations
     {
-        private readonly ICollection<MoneyOperation> expenses;
+        private readonly ICollection<MoneyOperation> moneyOperations;
         private static RecordsOfMoneyOperations instance;
 
-        private RecordsOfMoneyOperations(ICollection<MoneyOperation> expenses)
+        private RecordsOfMoneyOperations(ICollection<MoneyOperation> moneyOperations)
         {
-            this.expenses = expenses;
+            this.moneyOperations = moneyOperations;
         }
 
-        public static RecordsOfMoneyOperations GetInstance(ICollection<MoneyOperation> expenses)
+        public static RecordsOfMoneyOperations GetInstance(ICollection<MoneyOperation> moneyOperations)
         {
             if (instance == null)
             {
-                instance = new RecordsOfMoneyOperations(expenses);
+                instance = new RecordsOfMoneyOperations(moneyOperations);
             }
 
             return instance;
         }
 
-        public void AddExpense(MoneyOperation expense)
+        public void AddMoneyOperation(MoneyOperation moneyOperation)
         {
-            expenses.Add(expense);
+            moneyOperations.Add(moneyOperation);
         }
 
-        public ICollection<MoneyOperation> GetExpenses()
+        public ICollection<MoneyOperation> GetMoneyOperations()
         {
-            return expenses;
+            return moneyOperations;
         }
     }
 }
