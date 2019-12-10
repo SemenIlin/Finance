@@ -10,7 +10,10 @@ namespace Finance.Storage
 
         private RecordsStorage()
         {
-            storage = new List<MoneyOperation>();
+            storage = new List<MoneyOperation> {
+                    new MoneyOperation(default, default, System.String.Empty, TypeOperation.Expense),
+                    new MoneyOperation(default, default, System.String.Empty, TypeOperation.Income),
+                };
         }
 
         public static RecordsStorage GetInstance()
@@ -18,6 +21,7 @@ namespace Finance.Storage
             if (instance == null)
             {
                 instance = new RecordsStorage();
+               
             }
 
             return instance;

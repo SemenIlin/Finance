@@ -30,50 +30,22 @@ namespace Finance.Queries.GetMaxValue
 
         private decimal GetMaxValueIncome()
         {
-            try
-            {
-                return storage.Where(t => t.TypeOperation == TypeOperation.Expense).Max(v => v.Value);
-            }
-            catch 
-            {
-                return 0.0M;
-            }
+            return storage.Where(t => t.TypeOperation == TypeOperation.Expense).Max(v => v.Value);          
         }
 
         private decimal GetMaxValueExpence()
         {
-            try
-            {
-                return storage.Where(t => t.TypeOperation == TypeOperation.Income).Max(v => v.Value);
-            }
-            catch
-            {
-                return 0.0M;            
-            }
+            return storage.Where(t => t.TypeOperation == TypeOperation.Income).Max(v => v.Value);            
         }
 
         private decimal GetTotalIncome()
         {
-            try
-            {
-                return storage.Where(t => t.TypeOperation == TypeOperation.Income).Sum(v => v.Value);
-            }
-            catch 
-            {
-                return 0.0M;
-            }
+            return storage.Where(t => t.TypeOperation == TypeOperation.Income).Sum(v => v.Value);            
         }
 
         private decimal GetTotalExpense()
         {
-            try
-            {
-                return storage.Where(t => t.TypeOperation == TypeOperation.Expense).Sum(v => v.Value);
-            }
-            catch 
-            {
-                return 0.0M;
-            }
+            return storage.Where(t => t.TypeOperation == TypeOperation.Expense).Sum(v => v.Value);           
         }
 
         private decimal GetDelta()
@@ -83,54 +55,24 @@ namespace Finance.Queries.GetMaxValue
 
         private List<ResourceMoneyValue> GetExpense()
         {
-            List<ResourceMoneyValue> expense;
-            try
-            {
-                expense = storage.Where(t => t.TypeOperation == TypeOperation.Expense).GroupBy(s => s.Resource)
+            var expense = storage.Where(t => t.TypeOperation == TypeOperation.Expense).GroupBy(s => s.Resource)
                                                                                           .Select(t => new ResourceMoneyValue()
                                                                                           {
                                                                                               Resource = t.Key,
                                                                                               Value = t.Sum(v => v.Value)
                                                                                           }).OrderByDescending(v => v.Value).ToList();
-
-
-                return expense;
-            }
-            catch
-            {
-                expense = new List<ResourceMoneyValue>
-                {
-                    new ResourceMoneyValue { Resource = System.String.Empty, Value = 0.0M }
-                };
-
-                return expense;            
-            }
+            return expense;            
         }
 
         private List<ResourceMoneyValue> GetIncome()
         {
-            List<ResourceMoneyValue> income;
-
-            try
-            {
-                income = storage.Where(t => t.TypeOperation == TypeOperation.Income).GroupBy(s => s.Resource)
+            var income = storage.Where(t => t.TypeOperation == TypeOperation.Income).GroupBy(s => s.Resource)
                                                                                           .Select(t => new ResourceMoneyValue()
                                                                                           {
                                                                                               Resource = t.Key,
                                                                                               Value = t.Sum(v => v.Value)
                                                                                           }).OrderByDescending(v => v.Value).ToList();
-
-                return income;
-            }
-            catch
-            {
-                income = new List<ResourceMoneyValue>
-                {
-                    new ResourceMoneyValue{Resource = System.String.Empty , Value = 0.0M}
-                };
-
-                return income;
-            }
+            return income;            
         }
     }
 }

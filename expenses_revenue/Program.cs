@@ -83,10 +83,15 @@ namespace expenses_revenue
             int countRecords = int.TryParse(Console.ReadLine(), out countRecords) ? (countRecords > 0 ? countRecords : 1) : 1;
             var incomes = myFinance.GetListIncomes(countRecords);
 
+            var tableIncome = new ConsoleTable("Номер дня ", "Величина", "Источник");
+
             foreach (var item in incomes)
             {
-                Console.WriteLine("Номер дня: {0} \t Величина: {1} \t Источник {2}", item.NumberOfDay, item.Value, item.Resource);
+                tableIncome.AddRow(item.NumberOfDay, item.Value, item.Resource);
             }
+            Console.WriteLine("Доходы");
+            tableIncome.Print();
+
         }
 
         static void CreateExpense(MyFinance myFinance)
@@ -109,10 +114,14 @@ namespace expenses_revenue
             int countRecords = int.TryParse(Console.ReadLine(), out countRecords) ? (countRecords > 0 ? countRecords : 1) : 1;
             var expenses = myFinance.GetListExpenses(countRecords);
 
+            var tableExpense = new ConsoleTable("Номер дня ", "Величина", "Причина");
+
             foreach (var item in expenses)
             {
-                Console.WriteLine("Номер дня: {0} \t Величина: {1} \t Причина: {2}", item.NumberOfDay, item.Value, item.Resource);
+                tableExpense.AddRow(item.NumberOfDay, item.Value, item.Resource);
             }
+            Console.WriteLine("Расходы");
+            tableExpense.Print();
         }
 
         static void GetAnalysisBalance(MyFinance myFinance)
