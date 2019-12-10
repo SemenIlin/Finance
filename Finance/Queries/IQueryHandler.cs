@@ -1,4 +1,4 @@
-﻿namespace Finance.Interfaces.Operations
+﻿namespace Finance.Queries
 {
     public interface IQueryHandler<TRequest, TResponse> 
         where TRequest : IQuery<TResponse>

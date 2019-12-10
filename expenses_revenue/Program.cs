@@ -32,7 +32,7 @@ namespace expenses_revenue
                             Console.WriteLine("Введите источник:");
                             string resource = Console.ReadLine();
 
-                            Console.WriteLine(myFinanse.AddIncome(day, money, resource));
+                            myFinanse.AddIncome(day, money, resource);
 
                             break;
 
@@ -57,7 +57,7 @@ namespace expenses_revenue
                             Console.WriteLine("Введите причину:");
                             resource = Console.ReadLine();
 
-                            Console.WriteLine(myFinanse.AddExpense(day, money, resource));
+                            myFinanse.AddExpense(day, money, resource);
 
                             break;
 
@@ -69,6 +69,12 @@ namespace expenses_revenue
                             {
                                 Console.WriteLine("Номер дня: {0} \t Величина: {1} \t Причина: {2}", item.NumberOfDay, item.Value, item.Resource);
                             }
+
+                            break;
+
+                        case 5:
+
+                            Console.WriteLine("Номер дня: {0} \t Величина: {1} \t Причина: {2}", myFinanse.GetMaxValueIncome().NumberOfDay, myFinanse.GetMaxValueIncome().Value, myFinanse.GetMaxValueIncome().Resource); ;
 
                             break;
 

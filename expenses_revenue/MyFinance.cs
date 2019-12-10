@@ -1,45 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Finance.Interfaces.Operations;
+using Finance.Commands.CreateMoneyOperation;
+using Finance.Queries.GetStoreMoneyOperation;
+using Finance.Queries.GetMaxValue;
 using Finance.Money;
 
 namespace expenses_revenue
 {
     public class MyFinance
     {   
-        public string AddIncome(int day, decimal money, string resource)
+        public void AddIncome(int day, decimal money, string resource)
         {
-            var inputDataMoneyOperation = new InputDataMoneyOperation(new List<MoneyOperation>(), day, money, resource, Finance.TypeOperation.Income);
-            var handler = new InputDataMoneyOperationHandler();
-            var result = handler.Handle(inputDataMoneyOperation);
+            var crateIncome = new CreateMoneyOperationCommand(day, money, resource, Finance.TypeOperation.Income);
+            var handler = new CreateMoneyOperationHandler();
+            handler.Handle(crateIncome);
+
+            Console.WriteLine("Запись добавлена");
+        }
+
+        public void AddExpense(int day, decimal money, string resource)
+        {
+            var createExpense = new CreateMoneyOperationCommand( day, money, resource, Finance.TypeOperation.Expense);
+            var handler = new CreateMoneyOperationHandler();
+            handler.Handle(createExpense);
+
+            Console.WriteLine("Запись добавлена");
+        }
+
+        public List<MoneyOperation> GetListIncomes(int countRecords)
+        {
+            var getStoreIncomes = new GetStoreMoneyOperationQuery(Finance.TypeOperation.Income, countRecords);
+            var handler = new GetStoreMoneyOperationHandler();
+            var result = handler.Handle(getStoreIncomes);
 
             return result;
         }
 
-        public string AddExpense(int day, decimal money, string resource)
+        public List<MoneyOperation> GetListExpenses(int countRecords)
         {
-            var inputDataMoneyOperation = new InputDataMoneyOperation(new List<MoneyOperation>(), day, money, resource, Finance.TypeOperation.Expense);
-            var handler = new InputDataMoneyOperationHandler();
-            var result = handler.Handle(inputDataMoneyOperation);
+            var getStoreExpenses = new GetStoreMoneyOperationQuery(Finance.TypeOperation.Expense, countRecords);
+            var handler = new GetStoreMoneyOperationHandler();
+            var result = handler.Handle(getStoreExpenses);
 
             return result;
         }
 
-        public ICollection<MoneyOperation> GetListIncomes(int countRecords)
+        public MoneyOperation GetMaxValueIncome()
         {
-            var outputDataMoneyOperation = new OutputDataMoneyOperation(RecordsOfMoneyOperations.GetInstance(new List<MoneyOperation>()),Finance.TypeOperation.Income, countRecords);
-            var handler = new OutputDataMoneyOperationHandler();
-            var result = handler.Handle(outputDataMoneyOperation);
-
-            return result;
-        }
-
-        public ICollection<MoneyOperation> GetListExpenses(int countRecords)
-        {
-            var outputDataMoneyOperation = new OutputDataMoneyOperation(RecordsOfMoneyOperations.GetInstance(new List<MoneyOperation>()), Finance.TypeOperation.Expense, countRecords);
-            var handler = new OutputDataMoneyOperationHandler();
-            var result = handler.Handle(outputDataMoneyOperation);
+            var maxIncome = new GetMaxValueOperationQuery(Finance.TypeOperation.Income);
+            var handler = new GetMaxValueHandler();
+            var result = handler.Handle(maxIncome);
 
             return result;
         }
