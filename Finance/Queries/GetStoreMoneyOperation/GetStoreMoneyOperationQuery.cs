@@ -1,4 +1,4 @@
-﻿using Finance.Money;
+﻿using Finance.Models;
 using System.Collections.Generic;
 
 namespace Finance.Queries.GetStoreMoneyOperation
@@ -8,13 +8,10 @@ namespace Finance.Queries.GetStoreMoneyOperation
         public GetStoreMoneyOperationQuery(TypeOperation type, int countRecords)
         {
             CountRecords = countRecords;
-            Type = type;
-            MoneyOperation = RecordsStorage.GetInstance().GetMoneyOperations();        
+            Type = type;   
         }
 
-        public List<MoneyOperation> MoneyOperation { get; }
         public TypeOperation Type { get; }
-
         public int CountRecords { get; }        
     }
 }

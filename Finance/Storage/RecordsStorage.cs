@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Finance.Models;
 
-namespace Finance.Money
+namespace Finance.Storage
 {
     public class RecordsStorage
     {
@@ -27,7 +28,7 @@ namespace Finance.Money
             storage.Add(moneyOperation);
         }
 
-        public List<MoneyOperation> GetMoneyOperations()
+        public List<MoneyOperation> GetStorage()
         {
             return storage;
         }

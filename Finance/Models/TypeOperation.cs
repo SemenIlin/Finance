@@ -1,4 +1,4 @@
-﻿namespace Finance
+﻿namespace Finance.Models
 {
     public enum TypeOperation
     {

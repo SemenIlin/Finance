@@ -1,4 +1,4 @@
-﻿namespace Finance.Money
+﻿namespace Finance.Models
 {
     public class MoneyOperation
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using Finance.Money;
+﻿using Finance.Models;
 
 namespace Finance.Commands.CreateMoneyOperation
 {
