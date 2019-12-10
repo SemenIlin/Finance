@@ -55,13 +55,5 @@ namespace expenses_revenue
 
             return result;
         }
-
-        private void CreateTable()
-        {
-                    
-
-
-
-        }
     }
 }

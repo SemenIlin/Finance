@@ -55,7 +55,7 @@ namespace expenses_revenue
                 }
                 catch { }
 
-
+                Console.WriteLine("Для выхода нажмите ESC.");
                 if (Console.ReadKey().Key == ConsoleKey.Escape)
                 {
                     break;
@@ -118,22 +118,23 @@ namespace expenses_revenue
         static void GetAnalysisBalance(MyFinance myFinance)
         {
             var analysis = myFinance.GetAnalysisOfData();
-            var table = new ConsoleTable(analysis);
 
-            foreach (var item in analysis.Expense)
+            var tableExpenses = new ConsoleTable("Причина траты", "Величина");
+            foreach (var item in analysis.Expense) 
             {
-                Console.WriteLine("{0} \t {1}", item.Resource, item.Value);
+                tableExpenses.AddRow(item.Resource, item.Value);
             }
-
+            Console.WriteLine("Затраты");
+            tableExpenses.Print();
             Console.WriteLine();
 
+            var tableIncomes = new ConsoleTable("Источник дохода", "Величина");
             foreach (var item in analysis.Income)
             {
-                Console.WriteLine("{0} \t {1}", item.Resource, item.Value);
+                tableIncomes.AddRow(item.Resource, item.Value);
             }
-
-            Console.WriteLine();
-
+            Console.WriteLine("Доходы");
+            tableIncomes.Print();
             Console.WriteLine("Доход: {0}, Расход: {1}, Дельта:{2}", analysis.TotalValueIncome, analysis.TotalValueExpense, analysis.Delta);
         }
     }
