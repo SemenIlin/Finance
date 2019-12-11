@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Finance.Commands.CreateMoneyOperation;
 using Finance.Queries.GetStoreMoneyOperation;
 using Finance.Queries.GetMaxValue;
 using Finance.Models;
-
+using System.Linq;
 
 namespace expenses_revenue
 {
@@ -13,9 +12,9 @@ namespace expenses_revenue
     {   
         public void AddIncome(int day, decimal money, string resource)
         {
-            var crateIncome = new CreateMoneyOperationCommand(day, money, resource, TypeOperation.Income);
+            var createIncome = new CreateMoneyOperationCommand(day, money, resource, TypeOperation.Income);
             var handler = new CreateMoneyOperationHandler();
-            handler.Handle(crateIncome);
+            handler.Handle(createIncome);
 
             Console.WriteLine("Запись добавлена");
         }
@@ -27,6 +26,24 @@ namespace expenses_revenue
             handler.Handle(createExpense);
 
             Console.WriteLine("Запись добавлена");
+        }
+
+        public int GetCountIncomes()
+        {
+            var getStoreIncomes = new GetStoreMoneyOperationQuery(TypeOperation.Income);
+            var handler = new GetCountStoreMoneyOperationHandler();
+            var result = handler.Handle(getStoreIncomes);
+
+            return result.Count();
+        }
+
+        public int GetCountExpenses()
+        {
+            var getStoreExpenses = new GetStoreMoneyOperationQuery(TypeOperation.Expense);
+            var handler = new GetCountStoreMoneyOperationHandler();
+            var result = handler.Handle(getStoreExpenses);
+
+            return result.Count();
         }
 
         public List<MoneyOperation> GetListIncomes(int countRecords)

@@ -19,23 +19,11 @@ namespace Finance.Queries.GetMaxValue
             return new AnalysisOfData
             {
                 Delta = GetDelta(),
-                MaxValueIncome = GetMaxValueIncome(),
-                MaxValueExpence = GetMaxValueExpence(),
                 TotalValueExpense = GetTotalExpense(),
                 TotalValueIncome = GetTotalIncome(),
                 Income = GetIncome(),
                 Expense = GetExpense()
             };
-        }
-
-        private decimal GetMaxValueIncome()
-        {
-            return storage.Where(t => t.TypeOperation == TypeOperation.Expense).Max(v => v.Value);          
-        }
-
-        private decimal GetMaxValueExpence()
-        {
-            return storage.Where(t => t.TypeOperation == TypeOperation.Income).Max(v => v.Value);            
         }
 
         private decimal GetTotalIncome()
@@ -55,7 +43,7 @@ namespace Finance.Queries.GetMaxValue
 
         private List<ResourceMoneyValue> GetExpense()
         {
-            var expense = storage.Where(t => t.TypeOperation == TypeOperation.Expense).GroupBy(s => s.Resource)
+            var expense = storage.Where(t => t.TypeOperation == TypeOperation.Expense).ToLookup(s => s.Resource)
                                                                                           .Select(t => new ResourceMoneyValue()
                                                                                           {
                                                                                               Resource = t.Key,
@@ -66,7 +54,7 @@ namespace Finance.Queries.GetMaxValue
 
         private List<ResourceMoneyValue> GetIncome()
         {
-            var income = storage.Where(t => t.TypeOperation == TypeOperation.Income).GroupBy(s => s.Resource)
+            var income = storage.Where(t => t.TypeOperation == TypeOperation.Income).ToLookup(s => s.Resource)
                                                                                           .Select(t => new ResourceMoneyValue()
                                                                                           {
                                                                                               Resource = t.Key,

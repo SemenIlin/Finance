@@ -48,7 +48,7 @@ namespace expenses_revenue
 
             foreach (var row in rows)
             {
-                line = "";
+                line = System.String.Empty;
                 for (int i = 0; i < row.Length; i++)
                 {
                     if (int.TryParse(row[i], out int n))

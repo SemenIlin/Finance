@@ -5,13 +5,18 @@ namespace Finance.Queries.GetStoreMoneyOperation
 {
     public class GetStoreMoneyOperationQuery : IQuery<List<MoneyOperation>>
     {
-        public GetStoreMoneyOperationQuery(TypeOperation type, int countRecords)
+        public GetStoreMoneyOperationQuery(TypeOperation type)
         {
-            CountRecords = countRecords;
+            Type = type;
+        }
+
+        public GetStoreMoneyOperationQuery(TypeOperation type, int countOutputRecords)
+        {
+            CountOutputRecords = countOutputRecords;
             Type = type;   
         }
 
         public TypeOperation Type { get; }
-        public int CountRecords { get; }        
+        public int CountOutputRecords { get; }     
     }
 }

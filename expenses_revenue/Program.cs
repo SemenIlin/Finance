@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace expenses_revenue
 {
@@ -53,7 +52,10 @@ namespace expenses_revenue
                             break;
                     }
                 }
-                catch { }
+                catch(Exception ex) 
+                {
+                    Console.WriteLine(ex.Message);                
+                }
 
                 Console.WriteLine("Для выхода нажмите ESC.");
                 if (Console.ReadKey().Key == ConsoleKey.Escape)
@@ -79,10 +81,17 @@ namespace expenses_revenue
 
         static void GetRecordsIncome(MyFinance myFinance)
         {
-            Console.WriteLine("Введите количество строчек:");
+            var allCountIncomes = myFinance.GetCountIncomes();
+            if (allCountIncomes == 0)
+            {
+                Console.WriteLine("Нет данных");
+                return;
+            }
+
+            Console.WriteLine($"Введите количество строчек не больше {allCountIncomes}:");
+
             int countRecords = int.TryParse(Console.ReadLine(), out countRecords) ? (countRecords > 0 ? countRecords : 1) : 1;
             var incomes = myFinance.GetListIncomes(countRecords);
-
             var tableIncome = new ConsoleTable("Номер дня ", "Величина", "Источник");
 
             foreach (var item in incomes)
@@ -91,7 +100,6 @@ namespace expenses_revenue
             }
             Console.WriteLine("Доходы");
             tableIncome.Print();
-
         }
 
         static void CreateExpense(MyFinance myFinance)
@@ -110,7 +118,15 @@ namespace expenses_revenue
 
         static void GetRecordsExpense(MyFinance myFinance)
         {
-            Console.WriteLine("Введите количество строчек:");
+            var allCountExpenses = myFinance.GetCountExpenses();
+            if (allCountExpenses == 0)
+            {
+                Console.WriteLine("Нет данных");
+                return;               
+            }
+
+            Console.WriteLine($"Введите количество строчек не больше {allCountExpenses}:");
+
             int countRecords = int.TryParse(Console.ReadLine(), out countRecords) ? (countRecords > 0 ? countRecords : 1) : 1;
             var expenses = myFinance.GetListExpenses(countRecords);
 
@@ -127,14 +143,14 @@ namespace expenses_revenue
         static void GetAnalysisBalance(MyFinance myFinance)
         {
             var analysis = myFinance.GetAnalysisOfData();
-
             var tableExpenses = new ConsoleTable("Причина траты", "Величина");
-            foreach (var item in analysis.Expense) 
+            foreach (var item in analysis.Expense)
             {
                 tableExpenses.AddRow(item.Resource, item.Value);
             }
             Console.WriteLine("Затраты");
             tableExpenses.Print();
+            
             Console.WriteLine();
 
             var tableIncomes = new ConsoleTable("Источник дохода", "Величина");
@@ -144,6 +160,7 @@ namespace expenses_revenue
             }
             Console.WriteLine("Доходы");
             tableIncomes.Print();
+            
             Console.WriteLine("Доход: {0}, Расход: {1}, Дельта:{2}", analysis.TotalValueIncome, analysis.TotalValueExpense, analysis.Delta);
         }
     }
