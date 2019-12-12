@@ -1,6 +1,6 @@
 ﻿using Finance.Models;
 
-namespace Finance.Queries.GetMaxValue
+namespace Finance.Queries.GetAnalysisOfData
 {
     public class GetAnalysisOfBalanceQuery: IQuery<AnalysisOfData>
     {

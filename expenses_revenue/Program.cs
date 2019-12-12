@@ -31,9 +31,9 @@ namespace expenses_revenue
                     int.TryParse(Console.ReadLine(), out int selectCommand);
                     commands[(Commands)selectCommand].Invoke();
                 }
-                catch(Exception ex) 
+                catch
                 {
-                    Console.WriteLine(ex.Message);                
+                    Console.WriteLine("Неизвестная команда.");                
                 }
 
                 Console.WriteLine("Для выхода нажмите ESC.");

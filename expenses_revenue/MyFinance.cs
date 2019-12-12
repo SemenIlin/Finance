@@ -1,6 +1,6 @@
 ﻿using Finance.Commands.CreateMoneyOperation;
 using Finance.Models;
-using Finance.Queries.GetMaxValue;
+using Finance.Queries.GetAnalysisOfData;
 using Finance.Queries.GetStoreMoneyOperation;
 using System.Collections.Generic;
 using System.Linq;

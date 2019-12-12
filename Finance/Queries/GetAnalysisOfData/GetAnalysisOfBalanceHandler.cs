@@ -3,7 +3,7 @@ using System.Linq;
 using Finance.Models;
 using Finance.Storage;
 
-namespace Finance.Queries.GetMaxValue
+namespace Finance.Queries.GetAnalysisOfData
 {
     public class GetAnalysisOfBalanceHandler : IQueryHandler<GetAnalysisOfBalanceQuery, AnalysisOfData>
     {
