@@ -18,6 +18,8 @@ namespace Finance.Queries.GetAnalysisOfData
         {
             return new AnalysisOfData
             {
+                Tax = GetTotalTax(),
+
                 Delta = GetDelta(),
                 TotalValueExpense = GetTotalExpense(),
                 TotalValueIncome = GetTotalIncome(),
@@ -28,7 +30,7 @@ namespace Finance.Queries.GetAnalysisOfData
 
         private decimal GetTotalIncome()
         {
-            return storage.Where(t => t.TypeOperation == TypeOperation.Income).Sum(v => v.Value);            
+            return storage.Where(t => t.TypeOperation == TypeOperation.Income).Sum(v => v.Balance);            
         }
 
         private decimal GetTotalExpense()
@@ -43,24 +45,33 @@ namespace Finance.Queries.GetAnalysisOfData
 
         private List<ResourceMoneyValue> GetExpense()
         {
-            var expense = storage.Where(t => t.TypeOperation == TypeOperation.Expense).ToLookup(s => s.Resource)
-                                                                                          .Select(t => new ResourceMoneyValue()
-                                                                                          {
-                                                                                              Resource = t.Key,
-                                                                                              Value = t.Sum(v => v.Value)
-                                                                                          }).OrderByDescending(v => v.Value).ToList();
+            var expense = storage.Where(t => t.TypeOperation == TypeOperation.Expense)
+                .ToLookup(s => s.Resource)
+                .Select(t => new ResourceMoneyValue()
+                {
+                    Resource = t.Key,
+                    Balance = t.Sum(v => v.Value)
+                }).OrderByDescending(v => v.Balance).ToList();
             return expense;            
         }
 
         private List<ResourceMoneyValue> GetIncome()
         {
-            var income = storage.Where(t => t.TypeOperation == TypeOperation.Income).ToLookup(s => s.Resource)
-                                                                                          .Select(t => new ResourceMoneyValue()
-                                                                                          {
-                                                                                              Resource = t.Key,
-                                                                                              Value = t.Sum(v => v.Value)
-                                                                                          }).OrderByDescending(v => v.Value).ToList();
+            var income = storage.Where(t => t.TypeOperation == TypeOperation.Income)
+                .ToLookup(s => s.Resource)
+                .Select(t => new ResourceMoneyValue()
+                {
+                    Resource = t.Key,
+                    Balance = t.Sum(v => v.Balance),
+                    Tax = t.Sum(v => v.Tax)
+                }).OrderByDescending(v => v.Balance).ToList();
             return income;            
+        }
+
+        private decimal GetTotalTax()
+        {
+            var totalTax = storage.Where(t => t.TypeOperation == TypeOperation.Income).Sum(n => n.Tax);
+            return totalTax;
         }
     }
 }

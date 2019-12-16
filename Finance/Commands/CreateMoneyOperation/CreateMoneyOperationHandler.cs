@@ -14,7 +14,7 @@ namespace Finance.Commands.CreateMoneyOperation
 
         public void Handle(CreateMoneyOperationCommand command)
         {
-            var moneyOperation = new MoneyOperation(command.Day, command.Money, command.Resource, command.Operation);
+            var moneyOperation = new MoneyOperation(command.Day, command.Money, command.Tax, command.Balance, command.Resource, command.Operation);
             storage.AddMoneyOperation(moneyOperation);
         }
     }

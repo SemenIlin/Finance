@@ -51,20 +51,13 @@ namespace expenses_revenue
                 line = System.String.Empty;
                 for (int i = 0; i < row.Length; i++)
                 {
-                    if (int.TryParse(row[i], out int n))
-                    {
-                        line += "| " + row[i].PadLeft(lengths[i]) + ' ';  // numbers are padded to the left
-                    }
-                    else
-                    {
-                        line += "| " + row[i].PadRight(lengths[i]) + ' ';
-                    }
+                    line += "| " + row[i].PadRight(lengths[i]) + ' ';                   
                 }
                 System.Console.WriteLine(line + "|");
-            }
 
-            lengths.ForEach(l => System.Console.Write("+-" + new string('-', l) + '-'));
-            System.Console.WriteLine("+");
+                lengths.ForEach(l => System.Console.Write("+-" + new string('-', l) + '-'));
+                System.Console.WriteLine("+");
+            }
         }
     }
 }

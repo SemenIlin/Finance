@@ -12,11 +12,11 @@ namespace expenses_revenue
             Console.WriteLine("Анализ доходов и расходов");
             Dictionary<Commands, Action > commands = new Dictionary<Commands, Action>()
             {
-                { Commands.AddIncome, myFinance.AddIncomeWithTax},
-                { Commands.GetStorageIncomes, myFinance.GetTableOfIncomesWithTax },
+                { Commands.AddIncome, myFinance.AddIncome},
+                { Commands.GetStorageIncomes, myFinance.GetTableOfIncomes },
                 { Commands.AddExpense,  myFinance.AddExpense},
                 { Commands.GetStorageExpenses, myFinance.GetTableOfExpenses },
-                { Commands.GetAnalysis,  myFinance.GetTableOfAnalysisWithTax}
+                { Commands.GetAnalysis,  myFinance.GetTableOfAnalysis}
             };
 
             while (true)
