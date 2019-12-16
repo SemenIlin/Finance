@@ -1,16 +1,19 @@
-﻿using Finance.Commands.CreateMoneyOperation;
+﻿using Finance.Commands.CreateMoneyOperationWithTax;
+using Finance.Commands.CreateMoneyOperation;
 using Finance.Models;
 using Finance.Queries.GetAnalysisOfData;
 using Finance.Queries.GetStoreMoneyOperation;
 using System.Collections.Generic;
 using System.Linq;
+using Finance.Modifications.Tax;
+using Finance.Queries.GetAnalysisDataWithTax;
 
 namespace expenses_revenue
 {
     public class MyFinance
     {
         public void AddIncome()
-        {
+        {           
             System.Console.WriteLine("Введите день:");
             int day = int.TryParse(System.Console.ReadLine(), out day) ? (day > 0 ? day : 1) : 1;
 
@@ -25,6 +28,25 @@ namespace expenses_revenue
             handler.Handle(createIncome);
 
             System.Console.WriteLine("Запись добавлена");
+        }
+
+        public void AddIncomeWithTax()
+        {
+            System.Console.WriteLine("Введите день:");
+            int day = int.TryParse(System.Console.ReadLine(), out day) ? (day > 0 ? day : 1) : 1;
+
+            System.Console.WriteLine("Введите величину дохода:");
+            decimal money = decimal.TryParse(System.Console.ReadLine(), out money) ? (money > 0 ? money : 0) : 0;
+
+            System.Console.WriteLine("Введите источник:");
+            string resource = System.Console.ReadLine();
+
+            var createIncome = new CreateMoneyOperationWithTaxCommand(day, money, resource, TypeOperation.Income, new IncomeTax(13));
+            var handler = new CreateMoneyOperationWithTaxHandler();
+            handler.Handle(createIncome);
+
+            System.Console.WriteLine("Запись добавлена");
+
         }
 
         public void AddExpense()
@@ -54,8 +76,23 @@ namespace expenses_revenue
 
             foreach (var item in incomes)
             {
-                tableIncome.AddRow(item.NumberOfDay, item.Value, item.Resource);
+                tableIncome.AddRow(item.NumberOfDay.ToString(), item.Value.ToString(), item.Resource.ToString());
             }
+            System.Console.WriteLine("Доходы");
+            tableIncome.Print();
+        }
+
+        public void GetTableOfIncomesWithTax()
+        {
+            var incomes = GetListIncomes();
+
+            var tableIncome = new ConsoleTable("Номер дня ", "Источник", "Величина", "Налог");
+
+            foreach (var item in incomes)
+            {
+                tableIncome.AddRow(item.NumberOfDay.ToString(), item.Resource.ToString(), item.Balance.ToString(), item.Tax.ToString());
+            }
+
             System.Console.WriteLine("Доходы");
             tableIncome.Print();
         }
@@ -68,7 +105,7 @@ namespace expenses_revenue
 
             foreach (var item in expenses)
             {
-                tableExpense.AddRow(item.NumberOfDay, item.Value, item.Resource);
+                tableExpense.AddRow(item.NumberOfDay.ToString(), item.Value.ToString(), item.Resource.ToString());
             }
             System.Console.WriteLine("Расходы");
             tableExpense.Print(); 
@@ -81,7 +118,7 @@ namespace expenses_revenue
 
             foreach (var item in analysis.Expense)
             {
-                tableExpenses.AddRow(item.Resource, item.Value);
+                tableExpenses.AddRow(item.Resource, item.Value.ToString());
             }
             System.Console.WriteLine("Затраты");
             tableExpenses.Print();
@@ -91,7 +128,32 @@ namespace expenses_revenue
             var tableIncomes = new ConsoleTable("Источник дохода", "Величина");
             foreach (var item in analysis.Income)
             {
-                tableIncomes.AddRow(item.Resource, item.Value);
+                tableIncomes.AddRow(item.Resource, item.Value.ToString());
+            }
+            System.Console.WriteLine("Доходы");
+            tableIncomes.Print();
+
+            System.Console.WriteLine("Доход: {0}, Расход: {1}, Дельта:{2}", analysis.TotalValueIncome, analysis.TotalValueExpense, analysis.Delta);
+        }
+
+        public void GetTableOfAnalysisWithTax()
+        {
+            var analysis = GetAnalysisOfDataWithTax();
+            var tableExpenses = new ConsoleTable("Причина траты", "Величина");
+
+            foreach (var item in analysis.Expense)
+            {
+                tableExpenses.AddRow(item.Resource, item.Value.ToString());
+            }
+            System.Console.WriteLine("Затраты");
+            tableExpenses.Print();
+
+            System.Console.WriteLine();
+
+            var tableIncomes = new ConsoleTable("Источник дохода", "Величина", "Налоги");
+            foreach (var item in analysis.Income)
+            {
+                tableIncomes.AddRow(item.Resource, item.Value.ToString(), item.Tax.ToString() );
             }
             System.Console.WriteLine("Доходы");
             tableIncomes.Print();
@@ -103,6 +165,15 @@ namespace expenses_revenue
         {
             var maxIncome = new GetAnalysisOfBalanceQuery();
             var handler = new GetAnalysisOfBalanceHandler();
+            var result = handler.Handle(maxIncome);
+
+            return result;
+        }
+
+        private AnalysisOfData GetAnalysisOfDataWithTax()
+        {
+            var maxIncome = new GetAnalysisOfBalanceQuery();
+            var handler = new GetAnalysisOfBalanceWithTaxHandler();
             var result = handler.Handle(maxIncome);
 
             return result;

@@ -15,7 +15,7 @@ namespace expenses_revenue
             lengths = titles.Select(t => t.Length).ToList();
         }
 
-        public void AddRow(params object[] row)
+        public void AddRow(params string[] row)
         {
             if (row.Length != titles.Length)
             {
