@@ -1,16 +1,7 @@
-﻿using Finance.Modifications.Tax;
-namespace Finance.Models
+﻿namespace Finance.Models
 {
     public class MoneyOperation
     {
-        public MoneyOperation(int numberOfDay, decimal value, string resource, TypeOperation operation)
-        {
-            NumberOfDay = numberOfDay;
-            Value = value;
-            Resource = resource;
-            TypeOperation = operation;
-        }
-
         public MoneyOperation(int numberOfDay, decimal value, decimal tax, decimal balance, string resource, TypeOperation operation)
         {
             NumberOfDay = numberOfDay;

@@ -2,6 +2,6 @@
 { 
     public interface ITax
     {
-        double ValueTax { get; }
+        decimal ValueTax { get; }
     }
 }

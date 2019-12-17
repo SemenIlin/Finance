@@ -12,7 +12,7 @@ namespace Finance.Commands.CreateMoneyOperation
             Resource = resource;
             Operation = operation;
 
-            Tax = System.Math.Round(((decimal)tax.ValueTax * money / 100), 2);
+            Tax = System.Math.Round((tax.ValueTax * money / 100), 2);
             Balance = Money - Tax;
         }
 

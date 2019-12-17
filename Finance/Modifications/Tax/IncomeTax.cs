@@ -2,11 +2,11 @@
 {
     public class IncomeTax: ITax
     {
-        public IncomeTax(double tax)
+        public IncomeTax(decimal tax)
         {
             ValueTax = tax;        
         }
 
-        public double ValueTax { get; }
+        public decimal ValueTax { get; }
     }
 }
