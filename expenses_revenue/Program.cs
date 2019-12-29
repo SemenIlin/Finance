@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Finance.BLL.Infrastructure;
+using System;
 using System.Collections.Generic;
 
 namespace expenses_revenue
@@ -31,9 +32,27 @@ namespace expenses_revenue
                     int.TryParse(Console.ReadLine(), out int selectCommand);
                     commands[(Commands)selectCommand].Invoke();
                 }
-                catch
+                catch (InvalidCastException ex)
                 {
-                    Console.WriteLine("Неизвестная команда.");                
+                    Console.WriteLine(ex.Message);
+                }
+                catch (NotImplementedException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (ValidationException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine("Неизвестная команда.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
 
                 Console.WriteLine("Для выхода нажмите ESC.");
