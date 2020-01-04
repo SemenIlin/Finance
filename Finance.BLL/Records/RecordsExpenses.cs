@@ -10,16 +10,16 @@ namespace Finance.BLL.Records
 {
     public class RecordsExpenses:IRecordMoneyOperation
     {
-        private IUnitOfWork<Expense> Expenses { get; set; }
+        private IRepository<Expense> Expenses { get; set; }
 
-        public RecordsExpenses(IUnitOfWork<Expense> uow)
+        public RecordsExpenses(IRepository<Expense> uow)
         {
             Expenses = uow;
         }
 
         public void MakeRecords(IMoneyOperationDTO recordDto)
         {
-            Expenses.Repository.Create(new Expense(recordDto.Day, recordDto.Money, recordDto.Resource));            
+            Expenses.Create(new Expense(recordDto.Day, recordDto.Money, recordDto.Resource));            
         }
 
         public IMoneyOperationDTO GetRecord(int? id)
@@ -29,7 +29,7 @@ namespace Finance.BLL.Records
                 throw new ValidationException("Не установлено id записи расхода", "");
             }
 
-            var expense = Expenses.Repository.Get(id.Value);
+            var expense = Expenses.Get(id.Value);
             if (expense == null)
             {
                 throw new ValidationException("Запись расхода не найдена", "");
@@ -40,7 +40,7 @@ namespace Finance.BLL.Records
 
         public IEnumerable<IMoneyOperationDTO> GetRecords()
         {
-            return CopyValue(Expenses.Repository);
+            return CopyValue(Expenses);
         }
 
         private List<ExpenseDTO> CopyValue(IRepository<Expense> repository)

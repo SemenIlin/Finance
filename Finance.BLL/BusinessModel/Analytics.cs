@@ -8,13 +8,13 @@ namespace Finance.BLL.BusinessModel
 {
     public class Analytics
     {
-        private readonly IUnitOfWork<Income> incomeUOW;
-        private readonly IUnitOfWork<Expense> expenseUOW;
+        private readonly IRepository<Income> income;
+        private readonly IRepository<Expense> expense;
 
         public Analytics()
         {
-            this.incomeUOW = new ListIncomeUnitOfWork();
-            this.expenseUOW = new ListExpenseUnitOfWork();
+            income = new RepositoryIncome();
+            expense= new RepositoryExpenses();
         }
 
         public AnalyticsOfMoneyOperation AnalyticsOfMoneyOperation => new AnalyticsOfMoneyOperation { TotalExpenses = GetTotalExpenses(),
@@ -23,17 +23,17 @@ namespace Finance.BLL.BusinessModel
                                                                                                       Delta = GetDelta() };
         private decimal GetTotalIncomes()
         {
-            return incomeUOW.Repository.GetAll().Sum(m => m.Money);
+            return income.GetAll().Sum(m => m.Money);
         }
 
         private decimal GetTotalExpenses()
         {
-            return expenseUOW.Repository.GetAll().Sum(m => m.Money);
+            return expense.GetAll().Sum(m => m.Money);
         }
 
         private decimal GetTotalTax()
         {
-            return incomeUOW.Repository.GetAll().Sum(t => t.Tax);
+            return income.GetAll().Sum(t => t.Tax);
         }
 
         private decimal GetDelta()
