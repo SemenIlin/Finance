@@ -1,16 +1,20 @@
 ﻿using Finance.BLL.DTO;
 using Finance.DAL.Interfaces;
+using Finance.DAL.Models;
+using Finance.DAL.Repositories;
 using System.Linq;
 
 namespace Finance.BLL.BusinessModel
 {
     public class Analytics
     {
-        private readonly IUnitOfWork unitOfWorks;
+        private readonly IUnitOfWork<Income> incomeUOW;
+        private readonly IUnitOfWork<Expense> expenseUOW;
 
-        public Analytics(IUnitOfWork unitOfWorks)
+        public Analytics()
         {
-            this.unitOfWorks = unitOfWorks;
+            this.incomeUOW = new ListIncomeUnitOfWork();
+            this.expenseUOW = new ListExpenseUnitOfWork();
         }
 
         public AnalyticsOfMoneyOperation AnalyticsOfMoneyOperation => new AnalyticsOfMoneyOperation { TotalExpenses = GetTotalExpenses(),
@@ -19,17 +23,17 @@ namespace Finance.BLL.BusinessModel
                                                                                                       Delta = GetDelta() };
         private decimal GetTotalIncomes()
         {
-            return unitOfWorks.Income.GetAll().Sum(m => m.Money);
+            return incomeUOW.Repository.GetAll().Sum(m => m.Money);
         }
 
         private decimal GetTotalExpenses()
         {
-            return unitOfWorks.Expense.GetAll().Sum(m => m.Money);
+            return expenseUOW.Repository.GetAll().Sum(m => m.Money);
         }
 
         private decimal GetTotalTax()
         {
-            return unitOfWorks.Income.GetAll().Sum(t => t.Tax);
+            return incomeUOW.Repository.GetAll().Sum(t => t.Tax);
         }
 
         private decimal GetDelta()

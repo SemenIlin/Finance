@@ -14,7 +14,7 @@ namespace Finance.BLL.BusinessModel
 
         public (decimal Money,decimal Tax) GetMoneyAfterRecalculation(decimal money)
         {
-            decimal tax = money * ValueTax / 100;
+            decimal tax = System.Math.Round(money * ValueTax / 100, 2);
             money -= tax;
 
             var result = (Money: money, Tax: tax);

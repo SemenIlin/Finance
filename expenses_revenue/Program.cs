@@ -7,8 +7,7 @@ namespace expenses_revenue
     class Program
     {
         static void Main()
-        {
-            
+        {            
             var myFinance = new MyFinance();
             Console.WriteLine("Анализ доходов и расходов");
             Dictionary<Commands, Action > commands = new Dictionary<Commands, Action>()
@@ -43,12 +42,10 @@ namespace expenses_revenue
                 catch (ValidationException ex)
                 {
                     Console.WriteLine(ex.Message);
-                    //Console.WriteLine("Неизвестная команда.");
                 }
                 catch (ArgumentOutOfRangeException ex)
                 {
                     Console.WriteLine(ex.Message);
-
                 }
                 catch (Exception ex)
                 {

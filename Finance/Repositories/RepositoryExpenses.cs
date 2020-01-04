@@ -1,5 +1,6 @@
 ﻿using Finance.DAL.Interfaces;
 using Finance.DAL.Models;
+using Finance.DAL.Storages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,40 +9,40 @@ namespace Finance.DAL.Repositories
 {
     public class RepositoryExpenses : IRepository<Expense>
     {
-        private readonly List<Expense> expenses;
+        private readonly Storage<Expense> storages;
 
-        public RepositoryExpenses(List<Expense> expenses)
+        public RepositoryExpenses()
         {
-            this.expenses = expenses;
+            storages = Storage<Expense>.GetStorages();
         }
         public void Create(Expense expense)
         {
-            expenses.Add(expense) ;          
+            storages.Storages.Add(expense) ;          
         }
 
         public void Delete(int id)
         {
-            expenses.RemoveAt(id);
+            storages.Storages.RemoveAt(id);
         }
 
         public IEnumerable<Expense> Find(Func<Expense, bool> predicate)
         {
-           return expenses.Where(predicate).ToList();
+           return storages.Storages.Where(predicate).ToList();
         }
 
         public Expense Get(int id)
         {
-            return expenses.FirstOrDefault(i => i.Id == id);
+            return storages.Storages.FirstOrDefault(i => i.Id == id);
         }
 
         public IEnumerable<Expense> GetAll()
         {
-            return expenses.ToList();
+            return storages.Storages.ToList();
         }
 
         public void Update(Expense item)
         {
-            expenses[item.Id] = item;
+            storages.Storages[item.Id] = item;
         }
     }
 }

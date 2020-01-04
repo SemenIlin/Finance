@@ -5,23 +5,24 @@ using Finance.BLL.Records;
 using Finance.BLL.DTO;
 using Finance.BLL.BusinessModel;
 using Finance.BLL.Infrastructure;
+using expenses_revenue.Interface;
 using Finance.DAL.Repositories;
 
 namespace expenses_revenue
 {
-    public class MyFinance
+    public class MyFinance : IFinanceAnalytics
     {
         private readonly NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
         private readonly CultureInfo culture = CultureInfo.CreateSpecificCulture("en-GB");
+
         private readonly IRecordMoneyOperation[] records = new IRecordMoneyOperation[2];
-        private readonly ListUnitOfWork listUnitOfWork = new ListUnitOfWork();
         private readonly Analytics analytics;
 
         public MyFinance()
         {
-            records[0] = new RecordsExpenses(listUnitOfWork);
-            records[1] = new RecordsIncomes(listUnitOfWork);
-            analytics = new Analytics(listUnitOfWork);
+            records[0] = new RecordsExpenses(new ListExpenseUnitOfWork());
+            records[1] = new RecordsIncomes(new ListIncomeUnitOfWork());
+            analytics = new Analytics();
         }
 
         public void AddIncome()

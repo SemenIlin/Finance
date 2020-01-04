@@ -7,15 +7,13 @@ using Finance.DAL.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-
-
 namespace Finance.BLL.Records
 {
     public class RecordsIncomes : IRecordMoneyOperation
     {
-        private IUnitOfWork Incomes { get; set; }
+        private IUnitOfWork<Income> Incomes { get; set; }
 
-        public RecordsIncomes(IUnitOfWork uow)
+        public RecordsIncomes(IUnitOfWork<Income> uow)
         {
             Incomes = uow;
         }
@@ -23,7 +21,7 @@ namespace Finance.BLL.Records
         public void MakeRecords(IMoneyOperationDTO recordDto)
         {     
             var result = new Tax(recordDto.Tax).GetMoneyAfterRecalculation(recordDto.Money);
-            Incomes.Income.Create(new Income(recordDto.Day, result.Tax, result.Money, recordDto.Resource));
+            Incomes.Repository.Create(new Income(recordDto.Day, result.Tax, result.Money, recordDto.Resource));
             
         }
 
@@ -34,7 +32,7 @@ namespace Finance.BLL.Records
                 throw new ValidationException("Не установлено id записи дохода", "");
             }
 
-            var income = Incomes.Income.Get(id.Value);
+            var income = Incomes.Repository.Get(id.Value);
             if (income == null)
             {
                 throw new ValidationException("Запись дохода не найдена", "");
@@ -45,7 +43,7 @@ namespace Finance.BLL.Records
 
         public IEnumerable<IMoneyOperationDTO> GetRecords()
         {
-            return CopyValue(Incomes.Income);
+            return CopyValue(Incomes.Repository);
         }
 
         private List<IncomeDTO> CopyValue(IRepository<Income> repository)
