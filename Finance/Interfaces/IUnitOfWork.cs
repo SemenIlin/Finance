@@ -1,11 +1,8 @@
-﻿using Finance.DAL.Models;
-using System;
-
+﻿
 namespace Finance.DAL.Interfaces
 {
-    public interface IUnitOfWork: IDisposable
+    public interface IUnitOfWork<T> where T:class
     {
-        IRepository<Income> Income { get; }
-        IRepository<Expense> Expense { get; }
+        IRepository<T> Repository { get; }
     }
 }
