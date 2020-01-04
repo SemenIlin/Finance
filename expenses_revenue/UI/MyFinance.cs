@@ -20,8 +20,8 @@ namespace expenses_revenue
 
         public MyFinance()
         {
-            records[0] = new RecordsExpenses(new ListExpenseUnitOfWork());
-            records[1] = new RecordsIncomes(new ListIncomeUnitOfWork());
+            records[0] = new RecordsExpenses(new RepositoryExpenses());
+            records[1] = new RecordsIncomes(new RepositoryIncome());
             analytics = new Analytics();
         }
 
