@@ -1,0 +1,7 @@
+E:\source\C#\Finance\Finance\bin\Debug\netstandard2.0\Finance.DAL.deps.json
+E:\source\C#\Finance\Finance\bin\Debug\netstandard2.0\Finance.DAL.dll
+E:\source\C#\Finance\Finance\bin\Debug\netstandard2.0\Finance.DAL.pdb
+E:\source\C#\Finance\Finance\obj\Debug\netstandard2.0\Finance.DAL.AssemblyInfoInputs.cache
+E:\source\C#\Finance\Finance\obj\Debug\netstandard2.0\Finance.DAL.AssemblyInfo.cs
+E:\source\C#\Finance\Finance\obj\Debug\netstandard2.0\Finance.DAL.dll
+E:\source\C#\Finance\Finance\obj\Debug\netstandard2.0\Finance.DAL.pdb

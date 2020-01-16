@@ -1,4 +1,5 @@
-﻿using Finance.BLL.DTO;
+﻿using System;
+using Finance.BLL.DTO;
 using Finance.BLL.Infrastructure;
 using Finance.BLL.Interfaces;
 using Finance.DAL.Interfaces;
@@ -26,13 +27,13 @@ namespace Finance.BLL.Records
         {
             if (id == null)
             {
-                throw new ValidationException("Не установлено id записи расхода", "");
+                throw new NullReferenceException("Не установлено id записи расхода");
             }
 
             var expense = Expenses.Get(id.Value);
             if (expense == null)
             {
-                throw new ValidationException("Запись расхода не найдена", "");
+                throw new NullReferenceException("Запись расхода не найдена");
             }
 
             return new ExpenseDTO { Day = expense.Day, Money = expense.Money, Resource = expense.Resource };

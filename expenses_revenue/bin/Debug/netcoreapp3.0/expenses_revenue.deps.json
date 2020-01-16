@@ -1,0 +1,63 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.0": {
+      "expenses_revenue/1.0.0": {
+        "dependencies": {
+          "Finance.PL": "1.0.0"
+        },
+        "runtime": {
+          "expenses_revenue.dll": {}
+        }
+      },
+      "Finance.BLL/1.0.0": {
+        "dependencies": {
+          "Finance.DAL": "1.0.0"
+        },
+        "runtime": {
+          "Finance.BLL.dll": {}
+        }
+      },
+      "Finance.DAL/1.0.0": {
+        "runtime": {
+          "Finance.DAL.dll": {}
+        }
+      },
+      "Finance.PL/1.0.0": {
+        "dependencies": {
+          "Finance.BLL": "1.0.0",
+          "Finance.DAL": "1.0.0"
+        },
+        "runtime": {
+          "Finance.PL.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "expenses_revenue/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Finance.BLL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Finance.DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Finance.PL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

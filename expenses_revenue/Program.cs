@@ -1,5 +1,4 @@
-﻿using Finance.BLL.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace expenses_revenue
@@ -39,7 +38,7 @@ namespace expenses_revenue
                 {
                     Console.WriteLine(ex.Message);
                 }
-                catch (ValidationException ex)
+                catch (NullReferenceException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }

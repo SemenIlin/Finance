@@ -1,28 +1,19 @@
 ﻿using System.Linq;
 using System.Globalization;
-using Finance.BLL.Interfaces;
-using Finance.BLL.Records;
-using Finance.BLL.DTO;
-using Finance.BLL.BusinessModel;
-using Finance.BLL.Infrastructure;
-using expenses_revenue.Interface;
-using Finance.DAL.Repositories;
+using Finance.PL;
 
 namespace expenses_revenue
 {
-    public class MyFinance : IFinanceAnalytics
-    {
+    public class MyFinance 
+    { 
         private readonly NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
         private readonly CultureInfo culture = CultureInfo.CreateSpecificCulture("en-GB");
 
-        private readonly IRecordMoneyOperation[] records = new IRecordMoneyOperation[2];
-        private readonly Analytics analytics;
+        private readonly FinanceAnalytic financeAnalytic;
 
         public MyFinance()
         {
-            records[0] = new RecordsExpenses(new RepositoryExpenses());
-            records[1] = new RecordsIncomes(new RepositoryIncome());
-            analytics = new Analytics();
+            financeAnalytic = new FinanceAnalytic();
         }
 
         public void AddIncome()
@@ -34,7 +25,7 @@ namespace expenses_revenue
             System.Console.WriteLine("Введите год:");
             int.TryParse(System.Console.ReadLine(), out int year);
 
-            if (!IsCorrectDate(year, month, day))
+            if (!financeAnalytic.IsCorrectDate(year, month, day))
             {
                 return;
             }
@@ -45,7 +36,7 @@ namespace expenses_revenue
             System.Console.WriteLine("Введите источник:");
             string resource = System.Console.ReadLine();
 
-            records[1].MakeRecords(new IncomeDTO { Day = new System.DateTime(year, month, day), Money = money, Resource = resource, Tax = 13 }); 
+            financeAnalytic.AddIncome(year, month, day, money, resource);          
 
             System.Console.WriteLine("Запись добавлена");
         }
@@ -59,7 +50,7 @@ namespace expenses_revenue
             System.Console.WriteLine("Введите год:");
             int.TryParse(System.Console.ReadLine(), out int year);
 
-            if(!IsCorrectDate(year, month, day))
+            if(!financeAnalytic. IsCorrectDate(year, month, day))
             {
                 return;
             }
@@ -70,7 +61,8 @@ namespace expenses_revenue
             System.Console.WriteLine("Введите причину:");
             string resource = System.Console.ReadLine();
 
-            records[0].MakeRecords(new ExpenseDTO { Day = new System.DateTime(year, month, day), Money = money, Resource = resource });
+            financeAnalytic.AddExpense(year, month, day, money, resource);
+            
             System.Console.WriteLine("Запись добавлена");
         }
 
@@ -78,7 +70,7 @@ namespace expenses_revenue
         {
             decimal totalValue = 0;
 
-            var incomes = records[1].GetRecords();
+            var incomes = financeAnalytic.GetIncomeRecords();
             var tableIncome = new ConsoleTable("День", "Источник", "Доход","Налог", "Итоговый доход");
             
             foreach (var item in incomes)
@@ -95,7 +87,7 @@ namespace expenses_revenue
        
         public void GetTableOfExpenses()
         {
-            var expenses = records[0].GetRecords();
+            var expenses = financeAnalytic.GetExpenseRecords();
 
             var tableExpense = new ConsoleTable("День", "Причина", "Расход");
 
@@ -111,7 +103,7 @@ namespace expenses_revenue
 
         public void GetTableOfAnalysis()
         {
-            var analysis = records[0].GetRecords();
+            var analysis = financeAnalytic.GetExpenseRecords();
             var tableExpenses = new ConsoleTable("Причина траты", "Величина траты");
 
             foreach (var item in analysis)
@@ -125,12 +117,13 @@ namespace expenses_revenue
 
             System.Console.WriteLine();
 
-            analysis = records[1].GetRecords();
+            analysis = financeAnalytic.GetIncomeRecords();
             var tableIncomes = new ConsoleTable("Источник дохода", "Доход","Налог","Итоговый доход");
             foreach (var item in analysis)
             {
                 tableIncomes.AddRow(item.Resource, item.Money.ToString(), item.Tax.ToString(), (item.Tax + item.Money).ToString());
             }
+
             decimal totalTax = analysis.Sum(tax => tax.Tax);
             decimal totalBalance = analysis.Sum(balance => balance.Money);
             decimal totalValue = totalTax + totalBalance;
@@ -139,17 +132,11 @@ namespace expenses_revenue
             System.Console.WriteLine("Доходы");
             tableIncomes.Print();
 
-            System.Console.WriteLine("Доход: {0}, Расход: {1}, Дельта:{2}", analytics.AnalyticsOfMoneyOperation.TotalIncomes, analytics.AnalyticsOfMoneyOperation.TotalExpenses, analytics.AnalyticsOfMoneyOperation.Delta);
+            System.Console.WriteLine("Доход: {0}, Расход: {1}, Дельта:{2}", 
+                                      financeAnalytic.GetAnalytics().AnalyticsOfMoneyOperation.TotalIncomes,
+                                      financeAnalytic.GetAnalytics().AnalyticsOfMoneyOperation.TotalExpenses,
+                                      financeAnalytic.GetAnalytics().AnalyticsOfMoneyOperation.Delta);
         }
 
-        private bool IsCorrectDate(int year, int month, int day)
-        {
-            if (ValidationDate.DaysInMonth(year, month) >= day)
-            {
-                return true;
-            }
-
-            return false;
-        }
     }
 }

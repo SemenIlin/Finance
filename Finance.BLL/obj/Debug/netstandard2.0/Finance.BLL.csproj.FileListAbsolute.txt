@@ -1,0 +1,11 @@
+E:\source\C#\Finance\Finance.BLL\obj\Debug\netstandard2.0\Finance.BLL.csprojAssemblyReference.cache
+E:\source\C#\Finance\Finance.BLL\obj\Debug\netstandard2.0\Finance.BLL.AssemblyInfoInputs.cache
+E:\source\C#\Finance\Finance.BLL\obj\Debug\netstandard2.0\Finance.BLL.AssemblyInfo.cs
+E:\source\C#\Finance\Finance.BLL\bin\Debug\netstandard2.0\Finance.BLL.deps.json
+E:\source\C#\Finance\Finance.BLL\bin\Debug\netstandard2.0\Finance.BLL.dll
+E:\source\C#\Finance\Finance.BLL\bin\Debug\netstandard2.0\Finance.BLL.pdb
+E:\source\C#\Finance\Finance.BLL\bin\Debug\netstandard2.0\Finance.DAL.dll
+E:\source\C#\Finance\Finance.BLL\bin\Debug\netstandard2.0\Finance.DAL.pdb
+E:\source\C#\Finance\Finance.BLL\obj\Debug\netstandard2.0\Finance.BLL.csproj.CopyComplete
+E:\source\C#\Finance\Finance.BLL\obj\Debug\netstandard2.0\Finance.BLL.dll
+E:\source\C#\Finance\Finance.BLL\obj\Debug\netstandard2.0\Finance.BLL.pdb

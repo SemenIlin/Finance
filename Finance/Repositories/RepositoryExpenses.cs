@@ -1,7 +1,6 @@
 ﻿using Finance.DAL.Interfaces;
 using Finance.DAL.Models;
 using Finance.DAL.Storages;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +14,7 @@ namespace Finance.DAL.Repositories
         {
             storages = Storage<Expense>.GetStorages();
         }
+
         public void Create(Expense expense)
         {
             storages.Storages.Add(expense) ;          
@@ -23,11 +23,6 @@ namespace Finance.DAL.Repositories
         public void Delete(int id)
         {
             storages.Storages.RemoveAt(id);
-        }
-
-        public IEnumerable<Expense> Find(Func<Expense, bool> predicate)
-        {
-           return storages.Storages.Where(predicate).ToList();
         }
 
         public Expense Get(int id)

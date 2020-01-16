@@ -1,7 +1,6 @@
 ﻿using Finance.DAL.Interfaces;
 using Finance.DAL.Models;
 using Finance.DAL.Storages;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,11 +23,6 @@ namespace Finance.DAL.Repositories
         public void Delete(int id)
         {
             storages.Storages.RemoveAt(id);
-        }
-
-        public IEnumerable<Income> Find(Func<Income, bool> predicate)
-        {
-            return storages.Storages.Where(predicate).ToList();          
         }
 
         public Income Get(int id)

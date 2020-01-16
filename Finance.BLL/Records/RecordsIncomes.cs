@@ -1,6 +1,6 @@
-﻿using Finance.BLL.BusinessModel;
+﻿using System;
+using Finance.BLL.BusinessModel;
 using Finance.BLL.DTO;
-using Finance.BLL.Infrastructure;
 using Finance.BLL.Interfaces;
 using Finance.DAL.Interfaces;
 using Finance.DAL.Models;
@@ -29,13 +29,13 @@ namespace Finance.BLL.Records
         {
             if (id == null)
             {
-                throw new ValidationException("Не установлено id записи дохода", "");
+                throw new NullReferenceException("Не установлено id записи дохода");
             }
 
             var income = Incomes.Get(id.Value);
             if (income == null)
             {
-                throw new ValidationException("Запись дохода не найдена", "");
+                throw new NullReferenceException("Запись дохода не найдена");
             }
 
             return new IncomeDTO { Day = income.Day, Money = income.Money, Resource = income.Resource, Tax = income.Tax };

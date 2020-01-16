@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Finance.BLL\Finance.BLL.csproj" />
-    <ProjectReference Include="..\Finance\Finance.DAL.csproj" />
+    <ProjectReference Include="..\Finance.PL\Finance.PL.csproj" />
   </ItemGroup>
 
 </Project>
